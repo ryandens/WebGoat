@@ -17,7 +17,7 @@ public class Flags {
 
   public Flag getFlag(Lesson forLesson) {
     String lessonName = forLesson.getName();
-    int challengeNumber = Integer.valueOf(lessonName.substring(lessonName.length() - 1));
+    int challengeNumber = Integer.parseInt(lessonName.substring(lessonName.length() - 1));
     return FLAGS.get(challengeNumber);
   }
 
