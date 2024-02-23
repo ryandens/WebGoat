@@ -28,13 +28,17 @@ import java.util.Map;
 /** Created by appsec on 7/18/17. */
 public class AccountVerificationHelper {
 
+private static final String SECQUESTION1 = "secQuestion1";
+
+private static final String SECQUESTION0 = "secQuestion0";
+
   // simulating database storage of verification credentials
   private static final Integer verifyUserId = 1223445;
   private static final Map<String, String> userSecQuestions = new HashMap<>();
 
   static {
-    userSecQuestions.put("secQuestion0", "Dr. Watson");
-    userSecQuestions.put("secQuestion1", "Baker Street");
+    userSecQuestions.put(SECQUESTION0, "Dr. Watson");
+    userSecQuestions.put(SECQUESTION1, "Baker Street");
   }
 
   private static final Map<Integer, Map> secQuestionStore = new HashMap<>();
@@ -54,14 +58,14 @@ public class AccountVerificationHelper {
       likely = true;
     }
 
-    if ((submittedAnswers.containsKey("secQuestion0")
+    if ((submittedAnswers.containsKey(SECQUESTION0)
             && submittedAnswers
-                .get("secQuestion0")
-                .equals(secQuestionStore.get(verifyUserId).get("secQuestion0")))
-        && (submittedAnswers.containsKey("secQuestion1")
+                .get(SECQUESTION0)
+                .equals(secQuestionStore.get(verifyUserId).get(SECQUESTION0)))
+        && (submittedAnswers.containsKey(SECQUESTION1)
             && submittedAnswers
-                .get("secQuestion1")
-                .equals(secQuestionStore.get(verifyUserId).get("secQuestion1")))) {
+                .get(SECQUESTION1)
+                .equals(secQuestionStore.get(verifyUserId).get(SECQUESTION1)))) {
       likely = true;
     } else {
       likely = false;
@@ -78,17 +82,17 @@ public class AccountVerificationHelper {
       return false;
     }
 
-    if (submittedQuestions.containsKey("secQuestion0")
+    if (submittedQuestions.containsKey(SECQUESTION0)
         && !submittedQuestions
-            .get("secQuestion0")
-            .equals(secQuestionStore.get(verifyUserId).get("secQuestion0"))) {
+            .get(SECQUESTION0)
+            .equals(secQuestionStore.get(verifyUserId).get(SECQUESTION0))) {
       return false;
     }
 
-    if (submittedQuestions.containsKey("secQuestion1")
+    if (submittedQuestions.containsKey(SECQUESTION1)
         && !submittedQuestions
-            .get("secQuestion1")
-            .equals(secQuestionStore.get(verifyUserId).get("secQuestion1"))) {
+            .get(SECQUESTION1)
+            .equals(secQuestionStore.get(verifyUserId).get(SECQUESTION1))) {
       return false;
     }
 

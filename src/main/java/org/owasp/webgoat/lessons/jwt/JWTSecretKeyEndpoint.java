@@ -46,6 +46,8 @@ import org.springframework.web.bind.annotation.RestController;
 @AssignmentHints({"jwt-secret-hint1", "jwt-secret-hint2", "jwt-secret-hint3"})
 public class JWTSecretKeyEndpoint extends AssignmentEndpoint {
 
+private static final String USERNAME = "username";
+
   public static final String[] SECRETS = {
     "victory", "business", "available", "shipping", "washington"
   };
@@ -53,7 +55,7 @@ public class JWTSecretKeyEndpoint extends AssignmentEndpoint {
       TextCodec.BASE64.encode(SECRETS[new Random().nextInt(SECRETS.length)]);
   private static final String WEBGOAT_USER = "WebGoat";
   private static final List<String> expectedClaims =
-      List.of("iss", "iat", "exp", "aud", "sub", "username", "Email", "Role");
+      List.of("iss", "iat", "exp", "aud", "sub", USERNAME, "Email", "Role");
 
   @RequestMapping(path = "/JWT/secret/gettoken", produces = MediaType.TEXT_HTML_VALUE)
   @ResponseBody
@@ -64,7 +66,7 @@ public class JWTSecretKeyEndpoint extends AssignmentEndpoint {
         .setIssuedAt(Calendar.getInstance().getTime())
         .setExpiration(Date.from(Instant.now().plusSeconds(60)))
         .setSubject("tom@webgoat.org")
-        .claim("username", "Tom")
+        .claim(USERNAME, "Tom")
         .claim("Email", "tom@webgoat.org")
         .claim("Role", new String[] {"Manager", "Project Administrator"})
         .signWith(SignatureAlgorithm.HS256, JWT_SECRET)
@@ -80,7 +82,7 @@ public class JWTSecretKeyEndpoint extends AssignmentEndpoint {
       if (!claims.keySet().containsAll(expectedClaims)) {
         return failed(this).feedback("jwt-secret-claims-missing").build();
       } else {
-        String user = (String) claims.get("username");
+        String user = (String) claims.get(USERNAME);
 
         if (WEBGOAT_USER.equalsIgnoreCase(user)) {
           return success(this).build();

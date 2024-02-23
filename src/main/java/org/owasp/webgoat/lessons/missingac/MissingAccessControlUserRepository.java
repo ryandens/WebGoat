@@ -11,10 +11,12 @@ import org.springframework.util.CollectionUtils;
 @Component
 public class MissingAccessControlUserRepository {
 
+private static final String USERNAME = "username";
+
   private final NamedParameterJdbcTemplate jdbcTemplate;
   private final RowMapper<User> mapper =
       (rs, rowNum) ->
-          new User(rs.getString("username"), rs.getString("password"), rs.getBoolean("admin"));
+          new User(rs.getString(USERNAME), rs.getString("password"), rs.getBoolean("admin"));
 
   public MissingAccessControlUserRepository(LessonDataSource lessonDataSource) {
     this.jdbcTemplate = new NamedParameterJdbcTemplate(lessonDataSource);
@@ -28,7 +30,7 @@ public class MissingAccessControlUserRepository {
     var users =
         jdbcTemplate.query(
             "select username, password, admin from access_control_users where username=:username",
-            new MapSqlParameterSource().addValue("username", username),
+            new MapSqlParameterSource().addValue(USERNAME, username),
             mapper);
     if (CollectionUtils.isEmpty(users)) {
       return null;
@@ -41,7 +43,7 @@ public class MissingAccessControlUserRepository {
         "INSERT INTO access_control_users(username, password, admin)"
             + " VALUES(:username,:password,:admin)",
         new MapSqlParameterSource()
-            .addValue("username", user.getUsername())
+            .addValue(USERNAME, user.getUsername())
             .addValue("password", user.getPassword())
             .addValue("admin", user.isAdmin()));
     return user;
