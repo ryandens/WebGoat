@@ -49,7 +49,7 @@ public class VulnerableComponentsLessonTest {
   String contact = "<contact>\n" + "</contact>";
 
   @Test
-  public void testTransformation() throws Exception {
+  public void testTransformation() {
     XStream xstream = new XStream();
     xstream.registerConverter(new HardeningConverter());
     xstream.setClassLoader(Contact.class.getClassLoader());
@@ -60,7 +60,7 @@ public class VulnerableComponentsLessonTest {
 
   @Test
   @Disabled
-  public void testIllegalTransformation() throws Exception {
+  public void testIllegalTransformation() {
     XStream xstream = new XStream();
     xstream.registerConverter(new HardeningConverter());
     xstream.setClassLoader(Contact.class.getClassLoader());
@@ -74,7 +74,7 @@ public class VulnerableComponentsLessonTest {
   }
 
   @Test
-  public void testIllegalPayload() throws Exception {
+  public void testIllegalPayload() {
     XStream xstream = new XStream();
     xstream.registerConverter(new HardeningConverter());
     xstream.setClassLoader(Contact.class.getClassLoader());
