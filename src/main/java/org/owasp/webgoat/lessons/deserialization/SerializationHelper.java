@@ -1,5 +1,6 @@
 package org.owasp.webgoat.lessons.deserialization;
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -19,6 +20,7 @@ private SerializationHelper() {
   public static Object fromString(String s) throws IOException, ClassNotFoundException {
     byte[] data = Base64.getDecoder().decode(s);
     ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+    ObjectInputFilters.enableObjectFilterIfUnprotected(ois);
     Object o = ois.readObject();
     ois.close();
     return o;
